@@ -7,12 +7,18 @@
 #include "lcdcontrol.h"
 
 int lcd_send(int request, int value, int index) {
-  if(usb_control_msg(handle, USB_TYPE_VENDOR, request, 
-          value, index, NULL, 0, 1000) < 0) {
-    fprintf(stderr, "USB request failed!\n");
+  int err = usb_control_msg(handle, USB_TYPE_VENDOR, request,
+          value, index, NULL, 0, 1000);
+  if(err < 0) {
+      print_libusb_error(err);
     return -1;
   }
   return 0;
+}
+
+void print_libusb_error(int errorcode) {
+  fprintf(stderr, "USB request failed! %s\n",
+    usb_strerror());
 }
 
 void lcd_flush(void) {
@@ -85,7 +91,7 @@ void lcd_echo(void) {
      LCD_ECHO, val, 0, (char*)&ret, sizeof(ret), 1000);
 
     if(nBytes < 0) {
-      fprintf(stderr, "lcd_echo:\tUSB request failed!\n");
+      print_libusb_error(nBytes);
       return;
     }
 
@@ -111,7 +117,7 @@ int lcd_get(unsigned char cmd) {
      cmd, 0, 0, (char *)buffer, sizeof(buffer), 1000);
 
   if(nBytes < 0) {
-    fprintf(stderr, "lcd_get:\tUSB request failed!\n");
+    print_libusb_error(nBytes);
     return -1;
   }
 

@@ -131,3 +131,4 @@ void lcd_fade_out(int time);
 void lcd_fade_in(int time);
 /* Parses arguments received from user */
 void parseArguments(struct arguments *arguments);
+void print_libusb_error(int errorcode);
