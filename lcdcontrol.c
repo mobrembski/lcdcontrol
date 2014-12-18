@@ -238,6 +238,9 @@ int main(int argc, char *argv[]) {
   arguments.contrast = -1;
   arguments.brightness = -1;
   argp_parse (&argp, argc, argv, 0, 0, &arguments);
+  int pid = fork();
+  if(pid!=0)
+    exit(0);
 
   usb_init();
   
