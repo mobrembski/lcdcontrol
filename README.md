@@ -11,3 +11,4 @@ down computer.
 
 To compile, just type make.
 It uses libusb, so libusb with development headers needs to be instaled.
+Installation instructions are available in INSTALL.md file.
